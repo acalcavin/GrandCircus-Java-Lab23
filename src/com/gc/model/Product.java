@@ -10,26 +10,23 @@ import javax.persistence.Table;
 @Table(name = "product") // maps the class to the DB table specified by the name modifier
 
 public class Product {
-	
+
 	private int productID;
 	private String code;
 	private String description;
 	private double listPrice;
-	
-	
+
 	public Product() {
 
 	}
 
-
 	public Product(int productID, String code, String description, double listPrice) {
-	
+
 		this.productID = productID;
 		this.code = code;
 		this.description = description;
 		this.listPrice = listPrice;
 	}
-
 
 	@Id // maps the primary key
 	@GeneratedValue // instructs DB to generate a value for the field automatically
@@ -38,16 +35,14 @@ public class Product {
 		return productID;
 	}
 
-
 	public void setProductID(int productID) {
 		this.productID = productID;
 	}
 
-	@Column 
+	@Column
 	public String getCode() {
 		return code;
 	}
-
 
 	public void setCode(String code) {
 		this.code = code;
@@ -58,7 +53,6 @@ public class Product {
 		return description;
 	}
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -68,12 +62,13 @@ public class Product {
 		return listPrice;
 	}
 
-
 	public void setListPrice(double listPrice) {
 		this.listPrice = listPrice;
 	}
-	
-	
-	
+
+	public String toString() {
+		return "Primary key assigned as 0 is assigning the the value of null to the productID: " + productID + ","
+				+ code + "," + description + "," + listPrice;
+	}
 
 }
