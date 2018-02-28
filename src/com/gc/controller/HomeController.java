@@ -18,7 +18,7 @@ import com.gc.model.Product;
 import com.gc.util.HibernateUtil;
 
 /*
- * author: Antonella Solomon
+ * author: ACC
  *
  */
 
@@ -37,7 +37,7 @@ public class HomeController {
 	public ModelAndView helloWorld(Model model) {
 
 		ArrayList<Product> prodList = listAllProducts();
-		model.addAttribute("specificItem", prodList.get(2).getDescription());
+//		model.addAttribute("specificItem", prodList.get(2).getDescription());
 
 		return new ModelAndView("welcome", "pList", prodList);
 	}
@@ -76,17 +76,18 @@ public class HomeController {
 	}
 
 	@RequestMapping("addproduct")
-	public ModelAndView addNewProduct(@RequestParam("code") String code, @RequestParam("description") String desc,
-			@RequestParam("listprice") double price) {
+	public ModelAndView addNewProduct(@RequestParam("name") String name, @RequestParam("description") String desc, @RequestParam("quantity") int quantity,
+			@RequestParam("price") double price) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
 														// implemention of of our code
 
 		Product newProduct = new Product();
-		newProduct.setCode(code);
+		newProduct.setName(name);
 		newProduct.setDescription(desc);
-		newProduct.setListPrice(price);
+		newProduct.setQuantity(quantity);
+		newProduct.setPrice(price);
 		
 		session.save(newProduct);
 		tx.commit();
@@ -95,26 +96,26 @@ public class HomeController {
 		return new ModelAndView("addprodsuccess", "product", newProduct);
 	}
 	
-	@RequestMapping("delete")
-	public ModelAndView deleteProduct(@RequestParam("id") int id) {
-		
-		// temp object will store info for the object that we want to delete
-		Product temp = new Product();
-		temp.setProductID(id);
-		
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
-														// implemention of of our code
-		
-		session.delete(temp);
-		tx.commit();
-		session.close();
-		
-		ArrayList<Product> prodList = listAllProducts();
-		return new ModelAndView("welcome", "pList", prodList);
-		
-	}
+//	@RequestMapping("delete")
+//	public ModelAndView deleteProduct(@RequestParam("id") int id) {
+//		
+//		// temp object will store info for the object that we want to delete
+//		Product temp = new Product();
+//		temp.setProductID(id);
+//		
+//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//		Session session = sessionFactory.openSession();
+//		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
+//														// implemention of of our code
+//		
+//		session.delete(temp);
+//		tx.commit();
+//		session.close();
+//		
+//		ArrayList<Product> prodList = listAllProducts();
+//		return new ModelAndView("welcome", "pList", prodList);
+//		
+//	}
 	
 	@RequestMapping("update") 
 	public ModelAndView update(@RequestParam("id") int id) {
@@ -123,7 +124,7 @@ public class HomeController {
 	
 	// we are adding in the request param to send it to the form page and add it as a hidden field
 	@RequestMapping("updateproduct") 
-	public ModelAndView updateForm(@RequestParam("id") int id,@RequestParam("code") String code, @RequestParam("description") String desc,
+	public ModelAndView updateForm(@RequestParam("name") String name, @RequestParam("description") String desc, @RequestParam("quantity") int quantity,
 			@RequestParam("listprice") double price) {
 		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -132,14 +133,15 @@ public class HomeController {
 														// implemention of of our code
 
 		Product updateProduct = new Product();
-		updateProduct.setProductID(id);
-		updateProduct.setCode(code);
+		updateProduct.setName(name);
 		updateProduct.setDescription(desc);
-		updateProduct.setListPrice(price);
+		updateProduct.setQuantity(quantity);
+		updateProduct.setPrice(price);
 		
 		session.update(updateProduct);
 		tx.commit();
 		session.close();
+		
 		// this is going to allow us to see the updates on the welcome page
 		ArrayList<Product> prodList = listAllProducts();
 		return new ModelAndView("welcome", "pList", prodList);

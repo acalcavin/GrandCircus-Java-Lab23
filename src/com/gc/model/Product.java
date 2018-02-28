@@ -7,45 +7,35 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity // marks the class as a hibernate entity (mapped class)
-@Table(name = "product") // maps the class to the DB table specified by the name modifier
+@Table(name = "items") // maps the class to the DB table specified by the name modifier
 
 public class Product {
 
-	private int productID;
-	private String code;
+	private String name;
 	private String description;
-	private double listPrice;
+	private int quantity; // new
+	private double price;
 
 	public Product() {
 
 	}
 
-	public Product(int productID, String code, String description, double listPrice) {
+	public Product(String name, String description, int quantity, double price) {
 
-		this.productID = productID;
-		this.code = code;
+		this.name = name;
 		this.description = description;
-		this.listPrice = listPrice;
+		this.quantity = quantity;
+		this.price = price;
 	}
 
 	@Id // maps the primary key
-	@GeneratedValue // instructs DB to generate a value for the field automatically
-	@Column(name = "productID") // name is optional if your column names match your variable names
-	public int getProductID() {
-		return productID;
+	@Column(name = "name") // name is optional if your column names match your variable names
+	public String getName() {
+		return name;
 	}
 
-	public void setProductID(int productID) {
-		this.productID = productID;
-	}
-
-	@Column
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Column
@@ -58,17 +48,25 @@ public class Product {
 	}
 
 	@Column
-	public double getListPrice() {
-		return listPrice;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setListPrice(double listPrice) {
-		this.listPrice = listPrice;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	@Column
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public String toString() {
-		return "Primary key assigned as 0 is assigning the the value of null to the productID: " + productID + ","
-				+ code + "," + description + "," + listPrice;
+		return "Primary key assigned as 0 is assigning the the value of null to the productID: " + name + "," + description + ", Quantity: " + quantity + ", Price: $" + price;
 	}
 
 }

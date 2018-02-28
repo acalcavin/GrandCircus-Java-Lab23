@@ -5,24 +5,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>ItemAdmin</title>
 </head>
 <body>
-	Hi!
+	ItemAdmin
 ${specificItem }
 
 <br>
 <form action="searchbyproduct" method="get">
-<input type="text" name="product">
-<input type="submit" value="Search By Product">
+	<input type="text" name="product">
+	<input type="submit" value="Search By Product">
 </form>
 
 <h1>Add Item</h1> 
 <form action="addproduct" method="post">
-Code: <input type="text" name="code" required>
+Name: <input type="text" name="name" required>
 Description: <input type="text" name="description">
+Quantity: <input type="text" name="quantity">
+
 <!-- these additional attributes allow us to take in a double variable -->
-List Price <input type="number" min="1" step="any" name="listprice">
+List Price <input type="number" min="1" step="any" name="price">
 <input type="submit" value="Add Product">
 </form>
 
@@ -30,18 +32,17 @@ List Price <input type="number" min="1" step="any" name="listprice">
 	<table border="1">
 		<c:forEach var="myVar" items="${pList}">
 		<tr>
-			<td>${myVar.productID}</td>
-			<td>${myVar.code}</td>
+			<td>${myVar.name}</td>
 			<td>${myVar.description}</td>
-			<td>${myVar.listPrice}</td>
-			<td><a href="delete?id=${myVar.productID}">Delete</a>
-			<td><a href="update?id=${myVar.productID}">Update</a>
+			<td>${myVar.quantity}</td>
+			<td>${myVar.price}</td>
+			<td><a href="delete?id=${myVar.name}">Delete</a>
+			<td><a href="update?id=${myVar.name}">Update</a>
 		
-		</tr>
-		
-		
+		</tr>		
 		</c:forEach>
-		
 	</table>
+	
+	<!-- add href link to Add a new item -->
 </body>
 </html>
