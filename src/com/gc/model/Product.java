@@ -66,7 +66,7 @@ public class Product {
 	}
 
 	public String toString() {
-		return "Primary key assigned as 0 is assigning the the value of null to the productID: " + name + "," + description + ", Quantity: " + quantity + ", Price: $" + price;
+		return "Item successfully added: " + name + "," + description + ", Quantity: " + quantity + ", Price: $" + price + "0";
 	}
 
 }

@@ -4,18 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Update Product</title>
+<title>Edit Item</title>
 </head>
 <body>
 
-<h1>Update Item</h1> 
+<h1>Edit an Item</h1> 
+<br>
 <form action="updateproduct" method="post">
-<input type="hidden" name="id" value="${productID }">
-Code: <input type="text" name="code" required>
-Description: <input type="text" name="description">
+Name: <input type="text" name="name" value="${name}" required><br>
+Description: <input type="text" name="description" value="${description}"><br>
+Quantity: <input type="text" name="quantity"><br>
 <!-- these additional attributes allow us to take in a double variable -->
-List Price <input type="number" min="1" step="any" name="listprice">
-<input type="submit" value="Update Product">
+Price <input type="number" min="1" step="any" name="price"><br>
+<br>
+<input type="submit" value="Save">
 </form>
 
 </body>

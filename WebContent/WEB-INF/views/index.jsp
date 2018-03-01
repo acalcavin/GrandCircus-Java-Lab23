@@ -9,14 +9,11 @@
 	<br>
 	<div style="text-align:center">
 		<h2>
-			Hello World!<br> <br>
-			
+			Coffee Shop Admin<br> <br>
 		</h2>
 		
-		<h1>${indexTest }</h1>
 		<h3>
-			<a href="welcome.html">Click here to see the welcome page</a>
-			(check HomeController.java to view info for @RequestMapping("/welcome"))
+			<a href="welcome.html">Click here to access admin view</a>
 		</h3>
 	</div>
 </body>

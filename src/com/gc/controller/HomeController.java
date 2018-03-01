@@ -18,7 +18,7 @@ import com.gc.model.Product;
 import com.gc.util.HibernateUtil;
 
 /*
- * author: ACC
+ * author: Andrew Calabro-Cavin
  *
  */
 
@@ -37,7 +37,6 @@ public class HomeController {
 	public ModelAndView helloWorld(Model model) {
 
 		ArrayList<Product> prodList = listAllProducts();
-//		model.addAttribute("specificItem", prodList.get(2).getDescription());
 
 		return new ModelAndView("welcome", "pList", prodList);
 	}
@@ -46,91 +45,109 @@ public class HomeController {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
-														// implemention of of our code
+		Transaction tx = session.beginTransaction(); 
 		Criteria crit = session.createCriteria(Product.class);
 		ArrayList<Product> prodList = (ArrayList<Product>) crit.list();
-		System.out.println(prodList.size());
+		System.out.println("current size prodList: " + prodList.size());
 
-		
 		tx.commit();
 		session.close();
 		return prodList;
 	}
+	
+	@RequestMapping("additem")
+	public String addItemPage(Model model) {
 
-	@RequestMapping("searchbyproduct")
-	public ModelAndView searchProduct(@RequestParam("product") String prod) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
-														// implemention of of our code
-
-		// Criteria is used to create the query
-		Criteria crit = session.createCriteria(Product.class);
-		crit.add(Restrictions.like("code", "%" + prod + "%"));
-		ArrayList<Product> prodList = (ArrayList<Product>) crit.list();
-		tx.commit();
-		session.close();
-
-		return new ModelAndView("welcome", "pList", prodList);
+//		model.addAttribute("additemtest", "Pushing stuff to the additem");
+		return "additem";
 	}
+
+//	@RequestMapping("searchbyproduct")
+//	public ModelAndView searchProduct(@RequestParam("product") String prod) {
+//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//		Session session = sessionFactory.openSession();
+//		Transaction tx = session.beginTransaction(); 
+//
+//		// Criteria is used to create the query
+//		Criteria crit = session.createCriteria(Product.class);
+//		crit.add(Restrictions.like("code", "%" + prod + "%"));
+//		ArrayList<Product> prodList = (ArrayList<Product>) crit.list();
+//		tx.commit();
+//		session.close();
+//
+//		return new ModelAndView("welcome", "pList", prodList);
+//	}
 
 	@RequestMapping("addproduct")
 	public ModelAndView addNewProduct(@RequestParam("name") String name, @RequestParam("description") String desc, @RequestParam("quantity") int quantity,
-			@RequestParam("price") double price) {
+			@RequestParam("price") double price, Model model) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
-														// implemention of of our code
-
+		
+		Session session = null;  
+		Transaction tx = null;  
 		Product newProduct = new Product();
+		  
+		try {  
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction(); 
 		newProduct.setName(name);
 		newProduct.setDescription(desc);
 		newProduct.setQuantity(quantity);
 		newProduct.setPrice(price);
 		
 		session.save(newProduct);
+		
 		tx.commit();
-		session.close();
+		
+		}catch (Exception ex) {  
+			ex.printStackTrace();  
+			tx.rollback();
+			return new ModelAndView("addprodsuccess", "product", "Error. That item already exists.");
+			} 
+		
+		finally {session.close();}  
 		
 		return new ModelAndView("addprodsuccess", "product", newProduct);
 	}
 	
-//	@RequestMapping("delete")
-//	public ModelAndView deleteProduct(@RequestParam("id") int id) {
-//		
-//		// temp object will store info for the object that we want to delete
-//		Product temp = new Product();
-//		temp.setProductID(id);
-//		
-//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-//		Session session = sessionFactory.openSession();
-//		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
-//														// implemention of of our code
-//		
-//		session.delete(temp);
-//		tx.commit();
-//		session.close();
-//		
-//		ArrayList<Product> prodList = listAllProducts();
-//		return new ModelAndView("welcome", "pList", prodList);
-//		
-//	}
+	@RequestMapping("delete")
+	public ModelAndView deleteProduct(@RequestParam("id") String name) {
+		
+		// temp object will store info for the object that we want to delete
+		Product temp = new Product();
+		temp.setName(name);
+		
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction(); 
+		
+		session.delete(temp);
+		tx.commit();
+		session.close();
+		
+		ArrayList<Product> prodList = listAllProducts();
+		return new ModelAndView("welcome", "pList", prodList);
+		
+	}
 	
 	@RequestMapping("update") 
-	public ModelAndView update(@RequestParam("id") int id) {
-		return new ModelAndView("updateproductform", "productID", id);
+	public ModelAndView update(@RequestParam("id") String name, Model model) {
+		
+//		ArrayList<Product> prodList = listAllProducts();
+		
+		model.addAttribute("description", "description");
+		
+		return new ModelAndView("updateproductform", "name", name);
 	}
 	
 	// we are adding in the request param to send it to the form page and add it as a hidden field
 	@RequestMapping("updateproduct") 
 	public ModelAndView updateForm(@RequestParam("name") String name, @RequestParam("description") String desc, @RequestParam("quantity") int quantity,
-			@RequestParam("listprice") double price) {
+			@RequestParam("price") double price) {
 		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction(); // the transaction represents the unit of work or the actual
-														// implemention of of our code
+		Transaction tx = session.beginTransaction(); 
 
 		Product updateProduct = new Product();
 		updateProduct.setName(name);

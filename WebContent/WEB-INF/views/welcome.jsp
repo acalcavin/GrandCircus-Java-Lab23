@@ -8,8 +8,8 @@
 <title>ItemAdmin</title>
 </head>
 <body>
-	ItemAdmin
-${specificItem }
+	Item Admin
+
 
 <br>
 <form action="searchbyproduct" method="get">
@@ -17,32 +17,29 @@ ${specificItem }
 	<input type="submit" value="Search By Product">
 </form>
 
-<h1>Add Item</h1> 
-<form action="addproduct" method="post">
-Name: <input type="text" name="name" required>
-Description: <input type="text" name="description">
-Quantity: <input type="text" name="quantity">
-
-<!-- these additional attributes allow us to take in a double variable -->
-List Price <input type="number" min="1" step="any" name="price">
-<input type="submit" value="Add Product">
-</form>
-
-
 	<table border="1">
+	<tr>
+	<td>Name</td>
+	<td>Description</td>
+	<td>Quantity</td>
+	<td>Price</td>
 		<c:forEach var="myVar" items="${pList}">
 		<tr>
 			<td>${myVar.name}</td>
 			<td>${myVar.description}</td>
 			<td>${myVar.quantity}</td>
 			<td>${myVar.price}</td>
+			<td><a href="update?id=${myVar.name}">Edit</a>
 			<td><a href="delete?id=${myVar.name}">Delete</a>
-			<td><a href="update?id=${myVar.name}">Update</a>
 		
 		</tr>		
 		</c:forEach>
 	</table>
-	
+	<br><br>
 	<!-- add href link to Add a new item -->
+	<h3>
+	<a href="additem.html">Add a New Item</a>
+	</h3>
+	<script src="script.js"></script>
 </body>
 </html>
